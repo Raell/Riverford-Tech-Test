@@ -106,7 +106,7 @@
                 Array.from(labelmap.keys()).forEach(function(label) {
                     summaryset.push({
                         label: label,
-                        backgroundColor: colors[i][0],
+                        backgroundColor: colors[i],
                         borderColor: 'grey',
                         borderWidth: 0.5,
                         data: [Array.from(labelmap.get(label).values()).reduce((a, b) => a + b, 0)]
@@ -115,27 +115,21 @@
                     
                     var labels = Array.from(labelmap.get(label).keys()).slice(0, 10);               
                     var data = Array.from(labelmap.get(label).values()).slice(0, 10);              
+                    
+                    var dataset = [];
+                    for(var j = 0; j < labels.length; j++) {
+                        dataset.push({
+                            label: labels[j],
+                            backgroundColor: colors[j],
+                            data: [data[j]]
+                        });                     
+                    }
+                    
                     new Chart(label.replace(" ", "") + "Chart", {
-                        type: 'pie',
+                        type: 'bar',
                         data: {
-                            labels: labels,
-                            datasets: [{
-                                //label: 'Units sold',
-                                data: data,
-                                borderWidth: 1,
-                                backgroundColor: [
-                                    colors[0][0],
-                                    colors[1][0],
-                                    colors[2][0],
-                                    colors[3][0],
-                                    colors[4][0],
-                                    colors[5][0],
-                                    colors[6][0],
-                                    colors[7][0],
-                                    colors[8][0],
-                                    colors[9][0],
-                                ]
-                            }]
+                            labels: ["Units sold"],
+                            datasets: dataset
                         },
                         options: {
                             title: {
@@ -144,7 +138,7 @@
                             },
                             legend: {
                                 position: 'right'
-                            }
+                            }                          
                         }
                     });
                 });
