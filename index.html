@@ -89,27 +89,30 @@
                 
                 var summaryset = [];
                 var colors = [
-                    ['rgba(255, 99, 132)'],
-                    ['rgba(54, 162, 235)'],
-                    ['rgba(255, 206, 86)'],
-                    ['rgba(75, 192, 192)'],
-                    ['rgba(153, 102, 255)'],
-                    ['rgba(175, 238, 238)'],
-                    ['rgba(178, 145, 47)'],
-                    ['rgba(127,255,0)'],
-                    ['rgba(255,99,71)'],
-                    ['rgba(77, 77, 77)']
+                    ['rgb(255, 99, 132)'],
+                    ['rgb(54, 162, 235)'],
+                    ['rgb(255, 206, 86)'],
+                    ['rgb(75, 192, 192)'],
+                    ['rgb(153, 102, 255)'],
+                    ['rgb(175, 238, 238)'],
+                    ['rgb(178, 145, 47)'],
+                    ['rgb(127, 255, 0)'],
+                    ['rgb(255, 99, 71)'],
+                    ['rgb(77, 77, 77)']
                 ];
                 var i = 0;
                 
                 //Recursively sets summary dataset and create top 10 graphs
                 Array.from(rootMap.keys()).forEach(function(label) {
+                    
+                    var total = Array.from(rootMap.get(label).values()).reduce((a, b) => a + b, 0);
+                    
                     summaryset.push({
                         label: label,
                         backgroundColor: colors[i],
                         borderColor: 'grey',
                         borderWidth: 0.5,
-                        data: [Array.from(rootMap.get(label).values()).reduce((a, b) => a + b, 0)]
+                        data: [total]
                     });
                     i++;
                     
@@ -126,7 +129,7 @@
                     }
                     
                     new Chart(label.replace(" ", "") + "Chart", {
-                        type: 'horizontalBar',
+                        type: 'bar',
                         data: {
                             labels: ["Units sold"],
                             datasets: dataset
@@ -138,7 +141,19 @@
                             },
                             legend: {
                                 position: 'right'
-                            }                          
+                            },
+                            //Custom tooltip to display %'s
+                            tooltips: {
+                                callbacks: {
+                                    label: function(tooltipItem, data) {
+                                        var label = data.datasets[tooltipItem.datasetIndex].label;
+                                        var str = label + ": " + tooltipItem.yLabel;
+                                        var percent = tooltipItem.yLabel/total * 100;
+                                        str +=" (" + percent.toPrecision(3) + "%" + ")";
+                                        return str;
+                                    }
+                                }
+                            }
                         }
                     });
                 });
