@@ -183,7 +183,7 @@
                                     var value = dataset.data[tooltipItem.index];                            
                                     var total = dataset.data.reduce((a, b) => a + b, 0);
                                     var percent = (value/total) * 100;
-                                    var str = label + ": " + value + " (" + percent.toPrecision(3) + "%)"
+                                    var str = label + ": " + value + " (" + percent.toPrecision(3) + "%)";
                                     return str;
                                 }
                             }
